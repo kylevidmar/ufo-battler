@@ -95,3 +95,133 @@ To showcase DevOps expertise, UFO Battler implements a robust CI/CD pipeline usi
            with:
              name: build
              path: build/
+
+Continuous Deployment (CD)  
+Trigger: Push to main or staging  
+
+Steps:  
+Staging: Deploy to AWS S3 (ufo-battler-staging) and run integration tests  
+
+Production: Manual approval gate, deploy to AWS S3 (ufo-battler-prod) and update backend (Elastic Beanstalk)  
+
+Rollback: Automatic rollback on failure via AWS CloudFormation
+
+yaml
+
+name: CD
+on:
+  push:
+    branches: [main, staging]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: build/
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Deploy to Staging
+        if: github.ref == 'refs/heads/staging'
+        run: aws s3 sync build/ s3://ufo-battler-staging --delete
+      - name: Deploy to Production
+        if: github.ref == 'refs/heads/main'
+        env:
+          ENVIRONMENT: production
+        run: |
+          aws s3 sync build/ s3://ufo-battler-prod --delete
+          aws elasticbeanstalk update-environment --application-name ufo-battler --environment-name prod-env --version-label latest
+
+Monitoring and Logging  
+AWS CloudWatch for logs and metrics  
+
+Sentry for frontend error tracking  
+
+Health checks on API endpoints (e.g., /api/health)
+
+Security  
+Secrets stored in GitHub Secrets  
+
+HTTPS via AWS CloudFront  
+
+Rate limiting and CORS on backend
+
+Setup Instructions
+To run UFO Battler locally:
+Prerequisites  
+Node.js (v14+)  
+
+npm
+
+Clone the Repository  
+bash
+
+git clone https://github.com/yourusername/ufo-battler.git
+cd ufo-battler
+
+Install Dependencies  
+bash
+
+npm install
+
+Run the Application  
+bash
+
+npm start
+
+Access at http://localhost:3000
+
+Build for Production  
+bash
+
+npm run build
+
+Note: Local development may require a mock API or access to ufobattler.com backend. Update API endpoints in the code if needed.
+Usage
+Home Page  
+Click a video to vote for the better UFO sighting.  
+
+Use  to toggle sound, ⛶ for fullscreen, or 𝕏 to view the tweet.
+
+Leaderboard Page  
+Browse top videos or search by keywords (e.g., "orb", "Nevada").  
+
+Click a video to analyze it or open in a new tab.
+
+Analyze Page  
+View video metadata, embedded tweet, and UAP observables.  
+
+Explore similar sightings or share the video URL.
+
+Contributing
+Contributions are welcome! To contribute:
+Fork the repository.  
+
+Create a feature branch (git checkout -b feature/your-feature).  
+
+Commit changes (git commit -m "Add your feature").  
+
+Push to your fork (git push origin feature/your-feature).  
+
+Open a pull request with a detailed description.
+
+Ensure code passes linting and tests before submitting.
+License
+This project is licensed under the MIT License (LICENSE).
+
+### Instructions for Use
+1. Copy the entire Markdown content above.
+2. Paste it into your repository's `README.md` file.
+3. Replace `yourusername` in the clone command with your actual GitHub username.
+4. If your backend uses a different stack (not Node.js/Express) or hosting provider (not AWS), update the "Technologies Used" and "Deployment Pipeline" sections accordingly.
+5. Add a `LICENSE` file to your repository if you choose the MIT License, or update the license section to match your preference.
+6. Optionally, add screenshots or a demo link under a new "Demo" section to enhance visibility.
+
+This README is formatted for GitHub, with clear headings, code blocks, and concise descriptions. It highlights 
+
