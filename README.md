@@ -3,6 +3,7 @@
 UFO Battler is an engaging web application that allows users to vote on and rank UFO sighting videos sourced from Twitter/X. The platform invites UFO enthusiasts to compare videos, explore a leaderboard of top sightings, and analyze detailed metadata, fostering a community-driven exploration of unidentified aerial phenomena.
 
 https://ufobattler.com
+
 https://ufobattler.com/Leaderboard
 
 ## Features
