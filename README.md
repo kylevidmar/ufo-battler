@@ -32,7 +32,7 @@ UFO Battler is an engaging web application that allows users to vote on and rank
 
 - **Backend Integration**  
   - RESTful API endpoints (e.g., `https://ufobattler.com/api/getVideos`, `/leaderboard`, `/choose`)  
-  - Assumed backend: Node.js/Express (adjust as needed)  
+  - Node.js/Express/NGINX
 
 - **External APIs**  
   - Twitter/X API for tweet embedding via `widgets.js`  
