@@ -4,8 +4,6 @@ UFO Battler is an engaging web application that allows users to vote on and rank
 
 https://ufobattler.com
 
-https://ufobattler.com/Leaderboard
-
 ## Features
 
 - **Home Page**  
